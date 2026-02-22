@@ -8,6 +8,23 @@
   gap: 16px;
   padding: 24px 14px;
   overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 15%, rgba(147, 197, 253, 0.35), transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(125, 211, 252, 0.3), transparent 42%),
+    linear-gradient(160deg, #eef4ff 0%, #e6f0ff 45%, #dff2ff 100%);
+}
+
+.auth-shell {
+  width: min(100%, 980px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid #dce6f5;
+  border-radius: 20px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.13);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  z-index: 1;
 }
 
 .auth-backdrop-shape {
@@ -37,18 +54,23 @@
 }
 
 .auth-hero {
-  text-align: center;
-  z-index: 1;
+  padding: 42px 34px;
+  background: linear-gradient(160deg, #0f2f72, #19449c 55%, #1d4ed8);
+  color: #ffffff;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .auth-logo-ring {
-  width: 88px;
-  height: 88px;
-  margin: 0 auto 10px;
+  width: 92px;
+  height: 92px;
+  margin: 0 0 14px;
   border-radius: 50%;
-  background: linear-gradient(130deg, #1d4ed8, #2563eb, #0ea5e9);
+  background: linear-gradient(130deg, #7dd3fc, #60a5fa, #dbeafe);
   padding: 2px;
-  box-shadow: 0 14px 35px rgba(37, 99, 235, 0.24);
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.25);
   animation: authPulse 3.2s ease-in-out infinite;
 }
 
@@ -64,33 +86,31 @@
 
 .auth-hero h1 {
   margin: 0;
-  color: #1d4ed8;
-  font-size: 44px;
+  color: #ffffff;
+  font-size: 50px;
   letter-spacing: 0.4px;
   font-weight: 800;
 }
 
 .auth-hero p {
-  margin: 8px 0 0;
-  color: #4f6688;
-  font-size: 16px;
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 18px;
   font-weight: 500;
 }
 
 .auth-container {
-  width: 410px;
-  padding: 28px;
-  background: rgba(255, 255, 255, 0.88);
-  border-radius: 16px;
-  border: 1px solid #dce6f5;
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.13);
-  backdrop-filter: blur(8px);
-  z-index: 1;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #001f3f;  /* Deep Navy Blue */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
 }
 
 .auth-container h2 {
   margin: 0 0 10px;
   font-size: 40px;
+  color: #0b1f4d;
 }
 
 .auth-subtitle {
@@ -110,10 +130,22 @@
   text-decoration: underline;
 }
 
+.auth-container > button {
+  display: block;
+  margin: 0 auto;
+  min-width: 160px;
+}
+
 .auth-btn-group {
   display: grid;
   gap: 10px;
   margin-top: 8px;
+  justify-items: center;
+}
+
+.auth-btn-group button {
+  width: 220px;
+  text-align: center;
 }
 
 .secondary-auth-btn {
@@ -123,6 +155,34 @@
 
 .secondary-auth-btn:hover {
   background: #dbe7fb;
+}
+
+.password-field {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.password-field input {
+  margin-bottom: 0;
+  padding-right: 64px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #1e3a8a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.password-toggle:hover {
+  background: #eef2ff;
 }
 
 .auth-divider {
@@ -143,7 +203,7 @@
 
 .auth-divider span {
   position: relative;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   padding: 0 8px;
   color: #64748b;
   font-size: 12px;
@@ -172,7 +232,7 @@
 
 .auth-footer {
   width: 100%;
-  max-width: 900px;
+  max-width: 980px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -213,15 +273,44 @@
   }
 }
 
-@media (max-width: 560px) {
-  .auth-container {
-    width: 100%;
-    max-width: 410px;
-    padding: 22px;
+@media (max-width: 860px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
+    max-width: 430px;
+  }
+
+  .auth-hero {
+    text-align: center;
+    align-items: center;
+    padding: 28px 22px;
+  }
+
+  .auth-logo-ring {
+    margin: 0 auto 10px;
   }
 
   .auth-hero h1 {
-    font-size: 36px;
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 560px) {
+  .auth-page {
+    padding: 18px 12px;
+  }
+
+  .auth-shell {
+    max-width: 100%;
+    border-radius: 14px;
+  }
+
+  .auth-container {
+    padding: 22px;
+  }
+
+  .auth-btn-group button,
+  .auth-container > button {
+    width: 100%;
   }
 
   .auth-footer {

@@ -31,6 +31,23 @@ function UserProfile() {
       });
   }, [userId]);
 
+  const deleteAccount = async () => {
+    const ok = window.confirm(
+      "Delete account permanently? This will remove your profile, resumes, applications and posted data. You can register again later."
+    );
+
+    if (!ok) return;
+
+    try {
+      const res = await api.delete(`/api/users/delete/${userId}`);
+      alert(res.data?.message || "Account deleted permanently");
+      localStorage.clear();
+      navigate("/register");
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete account");
+    }
+  };
+
   if (!profile) {
     return <div className="loading">Loading profile...</div>;
   }
@@ -182,6 +199,13 @@ function UserProfile() {
           </button>
           <button className="primary-btn" onClick={() => navigate("/user")}>
             Update Resume
+          </button>
+        </div>
+
+        <div className="danger-zone">
+          <p>Danger Zone</p>
+          <button className="danger-btn" onClick={deleteAccount}>
+            Delete Account Permanently
           </button>
         </div>
       </motion.div>

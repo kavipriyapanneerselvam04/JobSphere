@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import "../ui/auth.css";
 import "../ui/common.css";
 import GoogleSignInButton from "./GoogleSignInButton";
-import logo from "../logo.svg";
-
+import logo from "../assets/jobsphere-logo.png";
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("USER");
   const navigate = useNavigate();
 
@@ -38,40 +38,57 @@ function Register() {
       <div className="auth-backdrop-shape auth-backdrop-shape--one" />
       <div className="auth-backdrop-shape auth-backdrop-shape--two" />
 
-      <header className="auth-hero">
-        <div className="auth-logo-ring">
-          <img src={logo} alt="JobSphere Logo" className="auth-logo-img" />
+      <div className="auth-shell">
+        <header className="auth-hero">
+          <div className="auth-logo-ring">
+            <img src={logo} alt="JobSphere Logo" className="auth-logo-img" />
+          </div>
+          <h1>JobSphere</h1>
+          <p>Create your account and start applying today</p>
+        </header>
+
+        <div className="auth-container">
+          <h2>Register</h2>
+          <p className="auth-subtitle">Join as user or recruiter</p>
+
+          <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+          <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          <select value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="USER">User</option>
+            <option value="RECRUITER">Recruiter</option>
+          </select>
+
+          <div className="auth-btn-group">
+            <button onClick={handleRegister}>Register</button>
+            <button className="secondary-auth-btn" onClick={() => navigate("/")}>
+              Back to Login
+            </button>
+          </div>
+
+          <div className="auth-divider"><span>or</span></div>
+          <GoogleSignInButton role={role} />
         </div>
-        <h1>JobSphere</h1>
-        <p>Create your account and start applying today</p>
-      </header>
-
-      <div className="auth-container">
-        <h2>Register</h2>
-        <p className="auth-subtitle">Join as user or recruiter</p>
-
-        <input placeholder="Name" onChange={(e) => setName(e.target.value)} />
-        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-
-        <select onChange={(e) => setRole(e.target.value)}>
-          <option value="USER">User</option>
-          <option value="RECRUITER">Recruiter</option>
-        </select>
-
-        <div className="auth-btn-group">
-          <button onClick={handleRegister}>Register</button>
-          <button className="secondary-auth-btn" onClick={() => navigate("/")}>
-            Back to Login
-          </button>
-        </div>
-
-        <div className="auth-divider"><span>or</span></div>
-        <GoogleSignInButton role={role} />
       </div>
 
       <footer className="auth-footer">
-        <span>© {new Date().getFullYear()} JobSphere</span>
+        <span>ï¿½ {new Date().getFullYear()} JobSphere</span>
         <span>Secure sign-in and smart hiring</span>
       </footer>
     </div>

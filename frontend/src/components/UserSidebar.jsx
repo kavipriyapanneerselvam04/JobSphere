@@ -27,7 +27,7 @@ const logout = () => {
       {/* Header */}
       <div className="sidebar-header">
         <div className="avatar">👤</div>
-        <h3>User Panel</h3>
+        <h3>Hi Applicant!</h3>
       </div>
 
       {/* Menu */}

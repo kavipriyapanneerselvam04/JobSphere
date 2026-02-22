@@ -66,23 +66,6 @@ function UserDashboard() {
     }
   };
 
-  const deleteAccount = async () => {
-    const ok = window.confirm(
-      "Delete account permanently? This will remove your profile, resumes, applications and posted data. You can register again later."
-    );
-
-    if (!ok) return;
-
-    try {
-      const res = await api.delete(`/api/users/delete/${userId}`);
-      alert(res.data?.message || "Account deleted permanently");
-      localStorage.clear();
-      navigate("/register");
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete account");
-    }
-  };
-
   return (
     <div className="dashboard-layout">
       <UserSidebar />
@@ -90,9 +73,6 @@ function UserDashboard() {
       <motion.div className="dashboard-content" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <h1 className="app-title">JobSphere</h1>
         <p className="app-subtitle">Smart Resume and Job Matching Platform</p>
-        <button className="danger" onClick={deleteAccount}>
-          Delete Account Permanently
-        </button>
 
         <div className="form-card">
           <h2>Resume and Job Matching</h2>

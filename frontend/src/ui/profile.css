@@ -339,6 +339,38 @@
   gap: 10px;
 }
 
+.danger-zone {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #f3d0d4;
+}
+
+.danger-zone p {
+  margin: 0 0 10px;
+  color: #991b1b;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.danger-btn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 11px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.danger-btn:hover {
+  background: #b91c1c;
+}
+
 .applications-section {
   margin-top: 14px;
 }
