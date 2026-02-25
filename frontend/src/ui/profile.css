@@ -20,12 +20,12 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   background:
     radial-gradient(circle at top right, #dce7ff 0%, transparent 48%),
     linear-gradient(140deg, var(--bg-start), var(--bg-end));
   padding: 28px 16px;
-  font-family: "Manrope", "Nunito Sans", sans-serif;
+  font-family: var(--font-body);
 }
 
 .profile-card {
@@ -447,6 +447,112 @@
   color: #6b778e;
 }
 
+/* Edit profile page polish */
+.edit-profile-card {
+  max-width: 980px;
+  border: 1px solid #d8e1ee;
+  box-shadow: 0 20px 52px rgba(20, 33, 61, 0.12);
+}
+
+.edit-head {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.edit-chip {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #1b4f8e;
+  background: #e8f0fb;
+}
+
+.edit-head h2 {
+  margin: 10px 0 6px;
+}
+
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+
+.edit-grid .profile-section {
+  margin-bottom: 2px;
+}
+
+.edit-grid .profile-section.full {
+  grid-column: 1 / -1;
+}
+
+.edit-grid .profile-section input,
+.edit-grid .profile-section textarea {
+  background: #f9fbfe;
+  border-color: #cfd9e6;
+  border-radius: 12px;
+}
+
+.edit-grid .profile-section input:focus,
+.edit-grid .profile-section textarea:focus {
+  border-color: #2a6cb6;
+  box-shadow: 0 0 0 3px rgba(42, 108, 182, 0.14);
+}
+
+.edit-actions {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.edit-actions .primary-btn,
+.edit-actions .secondary-btn {
+  width: 100%;
+}
+
+.edit-actions .primary-btn {
+  background: linear-gradient(135deg, #1f66b7, #174f8f);
+  box-shadow: 0 10px 24px rgba(24, 79, 143, 0.25);
+}
+
+.edit-actions .primary-btn:hover {
+  background: linear-gradient(135deg, #1b5ca7, #15457f);
+}
+
+.edit-actions .secondary-btn {
+  background: #edf2f8;
+  border: 1px solid #d2dbe9;
+  color: #1e3a5f;
+}
+
+.edit-actions .secondary-btn:hover {
+  background: #e5ecf6;
+}
+
+:root[data-theme="dark"] .edit-profile-card {
+  border-color: #30415f !important;
+}
+
+:root[data-theme="dark"] .edit-chip {
+  background: #243754;
+  color: #c4d8f7;
+}
+
+:root[data-theme="dark"] .edit-grid .profile-section input,
+:root[data-theme="dark"] .edit-grid .profile-section textarea {
+  background: #101b2f !important;
+  border-color: #324663 !important;
+}
+
+:root[data-theme="dark"] .edit-actions .secondary-btn {
+  background: #18253b;
+  color: #dbeafe;
+  border-color: #334a6c;
+}
+
 @media (max-width: 700px) {
   .profile-card {
     padding: 18px;
@@ -464,5 +570,204 @@
   .details-grid,
   .profile-actions {
     grid-template-columns: 1fr;
+  }
+
+  .edit-grid,
+  .edit-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Compact one-screen profile dashboard */
+.profile-dashboard-card {
+  max-width: 1120px;
+  width: min(1120px, 95vw);
+  height: calc(100vh - 88px);
+  max-height: calc(100vh - 88px);
+  padding: 14px 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-dashboard-card .profile-header {
+  margin-bottom: 8px;
+  padding-bottom: 10px;
+}
+
+.profile-dashboard-card .avatar,
+.profile-dashboard-card .avatar-img {
+  width: 56px;
+  height: 56px;
+}
+
+.profile-dashboard-card .profile-title {
+  font-size: 34px;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.profile-dashboard-card .email {
+  margin: 1px 0 0;
+  font-size: 18px;
+}
+
+.profile-dashboard-card .role {
+  margin-top: 4px;
+  font-size: 11px;
+  padding: 2px 8px;
+}
+
+.profile-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.profile-dashboard-grid > section {
+  min-height: 0;
+}
+
+.profile-dashboard-card .tagline {
+  margin: 0 0 8px;
+  padding: 9px 10px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.profile-dashboard-card .insight-grid {
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.profile-dashboard-card .insight-item {
+  padding: 8px;
+}
+
+.profile-dashboard-card .insight-item strong {
+  font-size: 24px;
+}
+
+.profile-dashboard-card .insight-item span {
+  font-size: 11px;
+}
+
+.profile-dashboard-card .profile-section {
+  margin-bottom: 8px;
+}
+
+.profile-dashboard-card .profile-section h4 {
+  margin: 0 0 6px;
+  font-size: 19px;
+}
+
+.profile-dashboard-card .details-grid {
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.profile-dashboard-card .detail-item {
+  padding: 8px;
+}
+
+.profile-dashboard-card .detail-item small {
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+.profile-dashboard-card .detail-item p {
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.profile-dashboard-card .skills-wrap {
+  gap: 6px;
+}
+
+.profile-dashboard-card .skill-chip {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.profile-dashboard-card .resume-box {
+  margin-top: 8px;
+  padding: 9px 11px;
+}
+
+.profile-dashboard-card .resume-meta span:first-child {
+  font-size: 15px;
+}
+
+.profile-dashboard-card .resume-meta span:last-child {
+  font-size: 12px;
+}
+
+.profile-dashboard-card .view-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.profile-dashboard-card .applications-section {
+  margin-top: 6px;
+  flex: 1;
+  min-height: 0;
+}
+
+.profile-dashboard-card .application-status-list {
+  max-height: 142px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.profile-dashboard-card .application-status-item {
+  padding: 8px;
+}
+
+.profile-dashboard-card .application-job-title {
+  font-size: 13px;
+}
+
+.profile-dashboard-card .application-date,
+.profile-dashboard-card .application-status-reason {
+  font-size: 11px;
+}
+
+.profile-dashboard-card .profile-actions {
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.profile-dashboard-card .primary-btn,
+.profile-dashboard-card .secondary-btn {
+  padding: 9px;
+  font-size: 14px;
+}
+
+.profile-dashboard-card .danger-zone {
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.profile-dashboard-card .danger-btn {
+  padding: 9px;
+  font-size: 14px;
+}
+
+@media (max-width: 980px) {
+  .profile-dashboard-card {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .profile-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-dashboard-card .application-status-list {
+    max-height: none;
+    overflow: visible;
   }
 }

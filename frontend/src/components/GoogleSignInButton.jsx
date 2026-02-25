@@ -25,10 +25,12 @@ function GoogleSignInButton({ role = "USER" }) {
             });
 
             const { id, name, email, role: userRole } = res.data.user;
+            const token = res.data.token;
             localStorage.setItem("userId", id);
             localStorage.setItem("userName", name);
             localStorage.setItem("userEmail", email);
             localStorage.setItem("role", userRole);
+            if (token) localStorage.setItem("authToken", token);
 
             if (userRole === "RECRUITER") navigate("/recruiter");
             else navigate("/user");

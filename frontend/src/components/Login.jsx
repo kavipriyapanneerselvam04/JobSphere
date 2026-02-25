@@ -24,11 +24,13 @@ function Login() {
       });
 
       const { id, name, email: userEmail, role } = res.data.user;
+      const token = res.data.token;
 
       localStorage.setItem("userId", id);
       localStorage.setItem("userName", name);
       localStorage.setItem("userEmail", userEmail);
       localStorage.setItem("role", role);
+      if (token) localStorage.setItem("authToken", token);
 
       if (role === "ADMIN") navigate("/admin");
       else if (role === "RECRUITER") navigate("/recruiter");

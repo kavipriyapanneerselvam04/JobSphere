@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -57,7 +57,7 @@ function UserDashboard() {
     setLoading(true);
     try {
       const res = await api.get(`/api/jobs/match/${userId}`);
-      setMatchedJobs(res.data);
+      setMatchedJobs(res.data || []);
     } catch (err) {
       alert("No jobs matched");
       setMatchedJobs([]);
@@ -71,11 +71,12 @@ function UserDashboard() {
       <UserSidebar />
 
       <motion.div className="dashboard-content" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <h1 className="app-title">JobSphere</h1>
+        <h1 className="app-title">JobSphere 🚀</h1>
         <p className="app-subtitle">Smart Resume and Job Matching Platform</p>
 
-        <div className="form-card">
+        <div className="form-card dashboard-panel">
           <h2>Resume and Job Matching</h2>
+          <p className="panel-subtitle">Keep your profile updated to get stronger role recommendations.</p>
 
           <input
             type="text"
@@ -93,15 +94,12 @@ function UserDashboard() {
           <input type="file" accept=".pdf" onChange={(e) => setFile(e.target.files[0])} />
 
           <div className="btn-row">
-            <button onClick={uploadResume}>Update Resume</button>
+            <button className="primary-btn" onClick={uploadResume}>Update Resume</button>
 
             <button
+              className="secondary-btn"
               onClick={matchJobs}
               disabled={!resumeUploaded}
-              style={{
-                backgroundColor: resumeUploaded ? "#1e3c72" : "#999",
-                cursor: resumeUploaded ? "pointer" : "not-allowed",
-              }}
             >
               Match Jobs
             </button>
@@ -110,22 +108,46 @@ function UserDashboard() {
 
         <h2 className="section-title">Recommended Jobs</h2>
 
-        {loading && <p>Loading jobs...</p>}
+        {loading && <p className="status-text">Finding the best matches...</p>}
 
-        {!loading && matchedJobs.length === 0 && <p>No jobs matched yet</p>}
+        {!loading && matchedJobs.length === 0 && (
+          <div className="empty-state jobs-empty">
+            <p>No jobs matched yet. Upload or update your resume, then click Match Jobs.</p>
+          </div>
+        )}
 
         <div className="job-grid">
-          {matchedJobs.map((job) => (
-            <motion.div key={job.id} className="job-card" whileHover={{ scale: 1.03 }}>
-              <h3>{job.title}</h3>
-              <p>
-                <b>Skills:</b> {job.skills}
-              </p>
-              <p>{job.description}</p>
+          {matchedJobs.map((job) => {
+            const skillList = String(job.skills || "")
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean);
 
-              <button onClick={() => navigate(`/apply/${job.id}`)}>Apply Now</button>
-            </motion.div>
-          ))}
+            return (
+              <motion.div key={job.id} className="job-card professional-job-card" whileHover={{ y: -4 }}>
+                <div className="job-card-head">
+                  <h3>{job.title}</h3>
+                  <span className="job-badge">Recommended</span>
+                </div>
+
+                <div className="skills-row">
+                  {skillList.length > 0 ? (
+                    skillList.map((skill, index) => (
+                      <span key={`${job.id}-${skill}-${index}`} className="skill-chip">{skill}</span>
+                    ))
+                  ) : (
+                    <span className="skill-chip">General</span>
+                  )}
+                </div>
+
+                <p className="job-description">{job.description}</p>
+
+                <button className="apply-btn" onClick={() => navigate(`/apply/${job.id}`)}>
+                  Apply Now
+                </button>
+              </motion.div>
+            );
+          })}
         </div>
       </motion.div>
     </div>

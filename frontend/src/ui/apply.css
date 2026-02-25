@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Manrope:wght@400;500;600&display=swap");
-
 *,
 *::before,
 *::after {
@@ -8,46 +6,48 @@
 
 :root {
   --ink-1: #0f172a;
-  --ink-2: #334155;
-  --line: #dbe4ef;
+  --ink-2: #3a465a;
+  --line: #d5dde8;
   --panel: #ffffff;
-  --sky-1: #ecf5ff;
-  --sky-2: #f8fbff;
-  --brand-a: #0b57d0;
-  --brand-b: #1f6feb;
-  --soft: #f1f5f9;
+  --sky-1: #f1f4f8;
+  --sky-2: #eef3f7;
+  --brand-a: #0f4c81;
+  --brand-b: #1764a8;
+  --soft: #edf2f7;
 }
 
 .apply-page {
   min-height: 100vh;
-  padding: 14px 16px;
+  padding: 10px 14px;
   background:
-    radial-gradient(circle at 8% 10%, #dff0ff 0%, transparent 38%),
-    radial-gradient(circle at 92% 92%, #e7f3ff 0%, transparent 32%),
+    radial-gradient(circle at 8% 10%, #edf4fb 0%, transparent 38%),
+    radial-gradient(circle at 92% 92%, #e9eff6 0%, transparent 32%),
     linear-gradient(135deg, var(--sky-1), var(--sky-2));
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-body);
 }
 
 .apply-shell {
   width: 100%;
-  max-width: 1120px;
-  margin: 8px auto;
+  max-width: 1240px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 300px 1fr;
-  border: 1px solid #dde8f5;
-  border-radius: 22px;
+  grid-template-columns: 320px 1fr;
+  border: 1px solid #cfd8e4;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 24px 60px rgba(25, 60, 110, 0.14);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.12);
   backdrop-filter: blur(6px);
   background: rgba(255, 255, 255, 0.72);
+  height: calc(100vh - 24px);
+  min-height: 680px;
 }
 
 .apply-info {
-  padding: 22px 20px;
-  background: linear-gradient(180deg, #0f4eb2, #0b3f91);
+  padding: 18px 18px;
+  background: linear-gradient(180deg, #1f3a56, #26374d);
   color: #ffffff;
 }
 
@@ -55,7 +55,7 @@
   display: inline-block;
   padding: 6px 11px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
   font-size: 11px;
   letter-spacing: 0.4px;
   margin-bottom: 10px;
@@ -63,34 +63,37 @@
 
 .apply-info h2 {
   margin: 0 0 8px;
-  font-family: "Sora", sans-serif;
-  font-size: 24px;
+  font-family: var(--font-display);
+  font-size: 32px;
   line-height: 1.2;
+  color: #f8fbff;
 }
 
 .sub-text {
-  margin: 0 0 14px;
-  color: #d6e6ff;
+  margin: 0 0 10px;
+  color: #d7deea;
   line-height: 1.45;
+  font-size: 16px;
 }
 
 .checklist {
   margin: 0;
   padding-left: 16px;
-  color: #edf4ff;
+  color: #eaf0f8;
   display: grid;
-  gap: 7px;
+  gap: 5px;
 }
 
 .apply-card {
-  background: #fdfefe;
-  padding: 22px 24px 18px; /* important fix: enough inner spacing */
+  background: #fcfdff;
+  padding: 14px 18px 14px;
+  overflow-y: auto;
 }
 
 .field-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 12px 14px;
+  gap: 10px 12px;
 }
 
 .field {
@@ -104,10 +107,10 @@
 }
 
 .field label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--ink-2);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .field input,
@@ -115,32 +118,32 @@
 .field textarea {
   width: 100%;
   max-width: 100%;
-  border: 1px solid #c9d6e6;
-  background: #f8fbff;
+  border: 1px solid #c8d2df;
+  background: #f6f8fb;
   color: var(--ink-1);
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 14px;
-  padding: 10px 12px;
+  padding: 9px 11px;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-body);
 }
 
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: #4b86e8;
-  box-shadow: 0 0 0 3px rgba(58, 121, 221, 0.15);
+  border-color: #2f6c9a;
+  box-shadow: 0 0 0 3px rgba(32, 89, 134, 0.14);
 }
 
 .field input:disabled {
   color: #5f6f84;
-  background: #eef3fa;
+  background: #edf1f6;
 }
 
 .field textarea {
   resize: vertical;
-  min-height: 92px;
+  min-height: 78px;
 }
 
 .check-row {
@@ -152,7 +155,7 @@
 .check-row input[type="checkbox"] {
   width: 15px;
   height: 15px;
-  accent-color: var(--brand-a);
+  accent-color: #1e5f94;
 }
 
 .check-row label {
@@ -169,16 +172,17 @@
 }
 
 .submit-btn {
-  margin-top: 14px;
-  width: 100%;
+  margin-top: 12px;
+  width: auto;
+  min-width: 180px;
   border: none;
-  border-radius: 12px;
-  padding: 11px;
+  border-radius: 10px;
+  padding: 10px 16px;
   color: #fff;
   background: linear-gradient(135deg, var(--brand-b), var(--brand-a));
   font-size: 14px;
   font-weight: 700;
-  font-family: "Sora", sans-serif;
+  font-family: var(--font-display);
   cursor: pointer;
 }
 
@@ -188,11 +192,13 @@
 }
 
 .cancel-btn {
-  margin-top: 8px;
-  width: 100%;
-  border: 1px solid #d6deea;
-  border-radius: 12px;
-  padding: 10px;
+  margin-top: 12px;
+  margin-left: 10px;
+  width: auto;
+  min-width: 140px;
+  border: 1px solid #c9d2df;
+  border-radius: 10px;
+  padding: 10px 16px;
   background: var(--soft);
   color: #1e293b;
   font-size: 14px;
@@ -201,18 +207,32 @@
 }
 
 .cancel-btn:hover {
-  background: #e8eef6;
+  background: #e4ebf3;
+}
+
+/* Keep desktop in one-screen side-by-side layout */
+@media (min-width: 961px) {
+  .field-grid .field.full {
+    grid-column: auto;
+  }
+
+  .field-grid .check-row,
+  .field-grid .field:last-child {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 960px) {
   .apply-page {
-    align-items: center;
+    align-items: flex-start;
     padding: 14px;
   }
 
   .apply-shell {
     grid-template-columns: 1fr;
     max-width: 760px;
+    height: auto;
+    min-height: 0;
   }
 
   .apply-info {
@@ -231,6 +251,7 @@
 
   .apply-card {
     padding: 14px;
+    overflow: visible;
   }
 
   .field-grid {

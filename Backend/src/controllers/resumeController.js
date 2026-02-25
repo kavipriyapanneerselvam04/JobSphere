@@ -36,6 +36,13 @@ exports.uploadResume = (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    const requesterId = Number(req.authUser?.id);
+    const requesterRole = req.authUser?.role;
+
+    if (requesterRole !== "ADMIN" && requesterId !== Number(user_id)) {
+      return res.status(403).json({ message: "You can upload resume only for your account" });
+    }
+
     const sql = `
       INSERT INTO resumes (user_id, skills, experience, file_name)
       VALUES (?, ?, ?, ?)

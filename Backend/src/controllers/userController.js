@@ -1,6 +1,9 @@
 const db = require("../models/db");
 const { sendEmail } = require("../utils/emailService");
 const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../middleware/auth");
 
 let OAuth2Client = null;
 try {
@@ -13,14 +16,28 @@ const googleClient = OAuth2Client
   ? new OAuth2Client(process.env.GOOGLE_CLIENT_ID || undefined)
   : null;
 
+const signToken = (user) =>
+  jwt.sign(
+    { id: Number(user.id), email: user.email, role: user.role },
+    JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
+  );
+
 // ---------- REGISTER ----------
 exports.register = (req, res) => {
   const { name, email, password, role } = req.body;
+  const normalizedRole = role === "RECRUITER" || role === "ADMIN" ? role : "USER";
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "Name, email and password are required" });
+  }
+
+  const passwordHash = bcrypt.hashSync(String(password), 10);
 
   const sql =
     "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
 
-    db.query(sql, [name, email, password, role], err => {
+  db.query(sql, [name, email, passwordHash, normalizedRole], (err, result) => {
     if (err) {
       if (err.code === "ER_DUP_ENTRY") {
         return res.status(409).json({ message: "Email already exists" });
@@ -34,7 +51,18 @@ exports.register = (req, res) => {
       text: `Hi ${name}, welcome to JobSphere. Your registration is successful.`,
     }).catch(() => {});
 
-    res.json({ message: "Registered successfully" });
+    const user = {
+      id: result.insertId,
+      name,
+      email,
+      role: normalizedRole,
+    };
+
+    res.json({
+      message: "Registered successfully",
+      user,
+      token: signToken(user),
+    });
   });
 };
 
@@ -74,19 +102,22 @@ exports.googleAuth = async (req, res) => {
       if (findErr) return res.status(500).json(findErr);
 
       if (existingRows.length > 0) {
-        return res.json({ user: existingRows[0], message: "Logged in with Google" });
+        const user = existingRows[0];
+        return res.json({ user, message: "Logged in with Google", token: signToken(user) });
       }
 
       const finalRole = role === "RECRUITER" ? "RECRUITER" : "USER";
       const generatedPassword = `GOOGLE_${crypto.randomBytes(8).toString("hex")}`;
+      const generatedPasswordHash = bcrypt.hashSync(generatedPassword, 10);
       const insertSql = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
 
-      db.query(insertSql, [name, email, generatedPassword, finalRole], (insertErr, result) => {
+      db.query(insertSql, [name, email, generatedPasswordHash, finalRole], (insertErr, result) => {
         if (insertErr) {
           if (insertErr.code === "ER_DUP_ENTRY") {
             db.query(findSql, [email], (refetchErr, rows) => {
               if (refetchErr) return res.status(500).json(refetchErr);
-              return res.json({ user: rows[0], message: "Logged in with Google" });
+              const user = rows[0];
+              return res.json({ user, message: "Logged in with Google", token: signToken(user) });
             });
             return;
           }
@@ -107,7 +138,7 @@ exports.googleAuth = async (req, res) => {
           text: `Hi ${name}, welcome to JobSphere. Your registration is successful.`,
         }).catch(() => {});
 
-        return res.json({ user, message: "Registered and logged in with Google" });
+        return res.json({ user, message: "Registered and logged in with Google", token: signToken(user) });
       });
     });
   } catch (err) {
@@ -120,19 +151,45 @@ exports.login = (req, res) => {
   const { email, password } = req.body;
 
   const sql = `
-    SELECT id, name, email, role
+    SELECT id, name, email, role, password
     FROM users
-    WHERE email = ? AND password = ?
+    WHERE email = ?
+    LIMIT 1
   `;
 
-  db.query(sql, [email, password], (err, results) => {
+  db.query(sql, [email], (err, results) => {
     if (err) return res.status(500).json(err);
 
     if (results.length === 0) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    res.json({ user: results[0] });
+    const row = results[0];
+    const storedPassword = String(row.password || "");
+
+    let isValid = false;
+    if (storedPassword.startsWith("$2a$") || storedPassword.startsWith("$2b$") || storedPassword.startsWith("$2y$")) {
+      isValid = bcrypt.compareSync(String(password || ""), storedPassword);
+    } else {
+      // Backward compatibility: upgrade legacy plain-text passwords on successful login.
+      isValid = storedPassword === String(password || "");
+      if (isValid) {
+        const upgradedHash = bcrypt.hashSync(String(password), 10);
+        db.query("UPDATE users SET password = ? WHERE id = ?", [upgradedHash, row.id], () => {});
+      }
+    }
+
+    if (!isValid) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const user = {
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      role: row.role,
+    };
+    res.json({ user, token: signToken(user) });
   });
 };
 
@@ -199,7 +256,18 @@ exports.uploadProfilePhoto = (req, res) => {
   upload(req, res, err => {
     if (err) return res.status(400).json(err);
 
-    const { userId } = req.body;
+    const userId = Number(req.body?.userId);
+    const requesterId = Number(req.authUser?.id);
+    const requesterRole = req.authUser?.role;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    if (requesterRole !== "ADMIN" && requesterId !== userId) {
+      return res.status(403).json({ message: "You can update only your own profile photo" });
+    }
+
     if (!req.file) return res.status(400).json({ message: "No file" });
 
     db.query(
