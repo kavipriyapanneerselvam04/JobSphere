@@ -6,9 +6,7 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  ssl: { rejectUnauthorized: false }
 });
 
 db.connect((err) => {
@@ -19,33 +17,34 @@ db.connect((err) => {
 
   console.log("MySQL connected");
 
-  const checkRecruiterColumnSql = `
-    SELECT COUNT(*) AS count
-    FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE TABLE_SCHEMA = DATABASE()
-      AND TABLE_NAME = 'jobs'
-      AND COLUMN_NAME = 'recruiter_id'
-  `;
+  // ✅ Create users table
+  db.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(150) NOT NULL,
+      email VARCHAR(200) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      role ENUM('USER','RECRUITER','ADMIN') DEFAULT 'USER',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
 
-  db.query(checkRecruiterColumnSql, (checkErr, rows) => {
-    if (checkErr) {
-      console.error("jobs schema check failed:", checkErr.message);
-      return;
-    }
+  // ✅ Create jobs table
+  db.query(`
+    CREATE TABLE IF NOT EXISTS jobs (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      company VARCHAR(255) NOT NULL,
+      location VARCHAR(255) NOT NULL,
+      description TEXT NOT NULL,
+      salary VARCHAR(100),
+      recruiter_id INT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
 
-    const exists = Number(rows?.[0]?.count || 0) > 0;
-    if (!exists) {
-      db.query("ALTER TABLE jobs ADD COLUMN recruiter_id INT NULL", (alterErr) => {
-        if (alterErr) {
-          console.error("jobs schema sync failed:", alterErr.message);
-          return;
-        }
-        console.log("jobs schema sync: recruiter_id column added");
-      });
-    }
-  });
-
-  const createApplicationsTableSql = `
+  // ✅ Create applications table
+  db.query(`
     CREATE TABLE IF NOT EXISTS applications (
       id INT AUTO_INCREMENT PRIMARY KEY,
       job_id INT NOT NULL,
@@ -66,17 +65,9 @@ db.connect((err) => {
       status_reason VARCHAR(255) NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      UNIQUE KEY uniq_job_user (job_id, user_id),
-      INDEX idx_job_id (job_id),
-      INDEX idx_user_id (user_id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-  `;
-
-  db.query(createApplicationsTableSql, (tableErr) => {
-    if (tableErr) {
-      console.error("applications table init failed:", tableErr.message);
-    }
-  });
+      UNIQUE KEY uniq_job_user (job_id, user_id)
+    )
+  `);
 });
 
 module.exports = db;
