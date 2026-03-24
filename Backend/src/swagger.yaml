@@ -1,0 +1,166 @@
+openapi: 3.0.0
+
+info:
+  title: Resume-Based Job Search and Recommendation System
+  version: 1.0.0
+  description: API documentation for resume-based job matching
+
+servers:
+  - url: http://localhost:5000
+
+paths:
+
+  /:
+    get:
+      summary: API Health Check
+      responses:
+        "200":
+          description: API running successfully
+
+  # ================= USERS =================
+
+  /api/users/register:
+    post:
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, role]
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: string
+      responses:
+        "200":
+          description: User registered successfully
+
+  /api/users/login:
+    post:
+      summary: User / Admin / Recruiter login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+        "401":
+          description: Invalid credentials
+
+  /api/users/all:
+    get:
+      summary: Get all users (Admin)
+      responses:
+        "200":
+          description: Users list returned
+
+  /api/users/delete/{id}:
+    delete:
+      summary: Delete user by ID (Admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User deleted successfully
+
+  # ================= JOBS =================
+
+  /api/jobs/add:
+    post:
+      summary: Add new job (Recruiter)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, skills, description]
+              properties:
+                title:
+                  type: string
+                skills:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "200":
+          description: Job added successfully
+
+  /api/jobs/all:
+    get:
+      summary: Get all jobs
+      responses:
+        "200":
+          description: Jobs list returned
+
+  /api/jobs/match/{userId}:
+    get:
+      summary: Match jobs based on resume skills
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Matched jobs returned
+
+  # ================= RESUME =================
+
+  /api/resume/upload:
+    post:
+      summary: Upload or update resume (User)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [user_id, resume]
+              properties:
+                user_id:
+                  type: integer
+                skills:
+                  type: string
+                experience:
+                  type: integer
+                resume:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Resume uploaded successfully
+
+  /api/resume/user/{userId}:
+    get:
+      summary: Get user resume
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resume returned

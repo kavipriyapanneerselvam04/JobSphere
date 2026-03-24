@@ -1,0 +1,15 @@
+.user-layout {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f4f7fc 0%, #eef3fb 100%);
+}
+
+.user-layout-content {
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+@media (max-width: 960px) {
+  .user-layout-content {
+    margin-left: 0;
+  }
+}

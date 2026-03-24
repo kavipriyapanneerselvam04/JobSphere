@@ -1,0 +1,200 @@
+:root {
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+  --font-display: "Sora", "Manrope", "Segoe UI", sans-serif;
+  --theme-bg: #f4f7fd;
+  --theme-surface: #ffffff;
+  --theme-text: #0f172a;
+  --theme-muted: #5b6475;
+  --theme-border: #d9e2ef;
+  --theme-input-bg: #ffffff;
+  --theme-link: #2563eb;
+}
+
+:root[data-theme="dark"] {
+  --theme-bg: #0b1220;
+  --theme-surface: #111a2b;
+  --theme-surface-2: #18243a;
+  --theme-text: #e5edf9;
+  --theme-muted: #9fb0cc;
+  --theme-border: #23324b;
+  --theme-input-bg: #0f1728;
+  --theme-link: #7fb0ff;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--theme-bg) !important;
+  color: var(--theme-text);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+button {
+  font-family: var(--font-display);
+}
+
+a {
+  color: var(--theme-link);
+}
+
+.theme-toggle-btn {
+  position: fixed;
+  top: 12px;
+  right: 14px;
+  z-index: 9999;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  border-radius: 999px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 20px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+}
+
+.theme-icon {
+  line-height: 1;
+}
+
+:root[data-theme="dark"] .theme-toggle-btn {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="dark"] .auth-container,
+:root[data-theme="dark"] .form-card,
+:root[data-theme="dark"] .dashboard,
+:root[data-theme="dark"] .dashboard-content,
+:root[data-theme="dark"] .recruiter-page,
+:root[data-theme="dark"] .recruiter-hero,
+:root[data-theme="dark"] .form-panel,
+:root[data-theme="dark"] .application-card,
+:root[data-theme="dark"] .job-card,
+:root[data-theme="dark"] .profile-card,
+:root[data-theme="dark"] .resume-box,
+:root[data-theme="dark"] .empty-state,
+:root[data-theme="dark"] .detail-item,
+:root[data-theme="dark"] .insight-item,
+:root[data-theme="dark"] .tagline,
+:root[data-theme="dark"] .no-resume,
+:root[data-theme="dark"] .application-status-item,
+:root[data-theme="dark"] table,
+:root[data-theme="dark"] .apply-shell,
+:root[data-theme="dark"] .apply-card {
+  background: var(--theme-surface-2) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+:root[data-theme="dark"] .dashboard-content,
+:root[data-theme="dark"] .recruiter-page,
+:root[data-theme="dark"] .profile-container,
+:root[data-theme="dark"] .apply-page {
+  background: linear-gradient(160deg, #0a1221, #0f1a2d) !important;
+}
+
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4,
+:root[data-theme="dark"] p,
+:root[data-theme="dark"] label,
+:root[data-theme="dark"] .profile-title,
+:root[data-theme="dark"] .application-top h4,
+:root[data-theme="dark"] .detail-item p,
+:root[data-theme="dark"] .insight-item strong,
+:root[data-theme="dark"] .stat-card strong {
+  color: var(--theme-text) !important;
+}
+
+:root[data-theme="dark"] .hero-subtitle,
+:root[data-theme="dark"] .sub-text,
+:root[data-theme="dark"] .tagline,
+:root[data-theme="dark"] .application-date,
+:root[data-theme="dark"] .email,
+:root[data-theme="dark"] .count,
+:root[data-theme="dark"] .detail-item small,
+:root[data-theme="dark"] .insight-item span,
+:root[data-theme="dark"] .application-card p,
+:root[data-theme="dark"] .auth-hero p,
+:root[data-theme="dark"] .auth-footer {
+  color: var(--theme-muted) !important;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: var(--theme-input-bg) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+:root[data-theme="dark"] .apply-info {
+  background: linear-gradient(180deg, #1d4ed8, #1e3a8a) !important;
+}
+
+:root[data-theme="dark"] ::placeholder {
+  color: #8ca1bf;
+  opacity: 1;
+}
+
+:root[data-theme="dark"] .sidebar {
+  background: linear-gradient(180deg, #0f172a, #1d4ed8) !important;
+}
+
+:root[data-theme="dark"] .auth-hero h1 {
+  color: #8fb6ff !important;
+}
+
+:root[data-theme="dark"] .auth-footer {
+  border-top-color: #2a3d5d !important;
+}
+
+:root[data-theme="dark"] .app-badge {
+  background: #22324f !important;
+  color: #bfd2f3 !important;
+}
+
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .stat-card.pending,
+:root[data-theme="dark"] .stat-card.accepted,
+:root[data-theme="dark"] .stat-card.declined {
+  background: #16233a !important;
+  border-color: #2a3d5d !important;
+}
+
+:root[data-theme="dark"] .stat-card span {
+  color: var(--theme-muted) !important;
+}
+
+:root[data-theme="dark"] .status-pending {
+  background: #312e81 !important;
+  color: #dbeafe !important;
+}
+
+:root[data-theme="dark"] .status-accepted {
+  background: #14532d !important;
+  color: #dcfce7 !important;
+}
+
+:root[data-theme="dark"] .status-declined {
+  background: #7f1d1d !important;
+  color: #fee2e2 !important;
+}
+
+@media (max-width: 640px) {
+  .theme-toggle-btn {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}
