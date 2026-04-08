@@ -104,7 +104,6 @@
 // }
 
 // module.exports = { sendEmail };
-
 const { Resend } = require("resend");
 
 // Initialize Resend
@@ -119,10 +118,21 @@ async function sendEmail({ to, subject, text }) {
 
   try {
     await resend.emails.send({
-      from: "onboarding@resend.dev", // default test sender
+      // ⚠️ CHANGE THIS to your verified email in Resend
+      from: "your_email@gmail.com",
+
       to,
       subject,
-      text,
+
+      // ✅ Use HTML (better delivery + design)
+      html: `
+        <div style="font-family: Arial, sans-serif;">
+          <h2>Welcome to JobSphere 🎉</h2>
+          <p>${text}</p>
+          <br/>
+          <p>Thank you for using JobSphere 🚀</p>
+        </div>
+      `,
     });
 
     console.log(`✅ Email sent to ${to}`);
