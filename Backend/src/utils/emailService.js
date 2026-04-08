@@ -104,38 +104,28 @@
 // }
 
 // module.exports = { sendEmail };
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
-// Send Email Function
 async function sendEmail({ to, subject, text }) {
-  if (!to || !subject || !text) {
-    console.log("❌ Missing email fields");
-    return;
-  }
-
   try {
-    await resend.emails.send({
-      // ⚠️ CHANGE THIS to your verified email in Resend
-      from: "your_email@gmail.com",
-
+    await transporter.sendMail({
+      from: `"JobSphere" <${process.env.SMTP_FROM}>`,
       to,
       subject,
-
-      // ✅ Use HTML (better delivery + design)
-      html: `
-        <div style="font-family: Arial, sans-serif;">
-          <h2>Welcome to JobSphere 🎉</h2>
-          <p>${text}</p>
-          <br/>
-          <p>Thank you for using JobSphere 🚀</p>
-        </div>
-      `,
+      text,
     });
 
-    console.log(`✅ Email sent to ${to}`);
+    console.log("✅ Email sent:", to);
   } catch (err) {
     console.error("❌ Email error:", err.message);
   }
