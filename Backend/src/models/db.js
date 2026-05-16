@@ -129,17 +129,23 @@
 // });
 
 // module.exports = db;
+
 require("dotenv").config();
 const mysql = require("mysql2");
 
-// Create a connection pool instead of a single connection
+// Create MySQL connection pool
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-  ssl: { rejectUnauthorized: false },
+  port: process.env.DB_PORT || 3306,
+
+  // Use SSL only if your cloud database requires it
+  // If your database does not require SSL, leave this commented.
+  // ssl: {
+  //   rejectUnauthorized: false,
+  // },
 
   waitForConnections: true,
   connectionLimit: 10,
@@ -148,16 +154,17 @@ const db = mysql.createPool({
   keepAliveInitialDelay: 0,
 });
 
-// Test the connection when the server starts
+// Test connection when server starts
 db.getConnection((err, connection) => {
   if (err) {
-    console.error("DB connection failed:", err);
+    console.error("DB connection failed:", err.message);
     return;
   }
 
-  console.log("MySQL connected");
+  console.log("MySQL connected successfully");
 
-  if (connection) connection.release();
+  // Release the test connection back to the pool
+  connection.release();
 
   const runQuery = (sql) => {
     db.query(sql, (queryErr) => {
@@ -175,6 +182,7 @@ db.getConnection((err, connection) => {
     });
   };
 
+  // USERS TABLE
   runQuery(`
     CREATE TABLE IF NOT EXISTS users (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -196,6 +204,7 @@ db.getConnection((err, connection) => {
     )
   `);
 
+  // JOBS TABLE
   runQuery(`
     CREATE TABLE IF NOT EXISTS jobs (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -210,6 +219,7 @@ db.getConnection((err, connection) => {
     )
   `);
 
+  // RESUMES TABLE
   runQuery(`
     CREATE TABLE IF NOT EXISTS resumes (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -225,6 +235,7 @@ db.getConnection((err, connection) => {
     )
   `);
 
+  // APPLICATIONS TABLE
   runQuery(`
     CREATE TABLE IF NOT EXISTS applications (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -251,7 +262,7 @@ db.getConnection((err, connection) => {
     )
   `);
 
-  // Safe ALTER statements
+  // SAFE ALTER STATEMENTS
   runQuery("ALTER TABLE users ADD COLUMN profile_photo VARCHAR(500) NULL");
   runQuery("ALTER TABLE users ADD COLUMN profile_photo_public_id VARCHAR(255) NULL");
   runQuery("ALTER TABLE users ADD COLUMN dob DATE NULL");
